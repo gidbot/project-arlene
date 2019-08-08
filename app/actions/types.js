@@ -1,0 +1,13 @@
+export const LOGIN_USER_CHANGED = 'login_user_changed';
+export const LOGIN_USER_SUCCESS = 'login_user_success';
+export const LOGIN_USER_FAIL = 'login_user_fail';
+export const LOGGING_IN_USER = 'logging_in_user';
+export const LOGOUT_USER_SUCCESS = 'logout_user_success';
+export const MOM_CHANGED = 'mom_changed';
+export const SAVING_MOM = 'saving_mom';
+export const CREATE_MOM = 'create_mom';
+export const MOM_SAVED = 'mom_saved';
+export const USER_CHANGED = 'user_changed';
+export const SIGN_UP_USER_SUCCESS = 'sign_up_user_success';
+export const SIGN_UP_USER_FAIL = 'sign_up_user_fail';
+export const SIGNING_UP_USER = 'sign_up_user';
