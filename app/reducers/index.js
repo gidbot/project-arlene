@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import AuthReducer from './AuthReducer';
-import MomFormReducer from './MomFormReducer';
 import SignUpFormReducer from './SignUpFormReducer';
+import MomFormReducer from './MomFormReducer';
+import MomReducer from './MomReducer';
 
 export default combineReducers({
   auth: AuthReducer,
+  signUpForm: SignUpFormReducer,
   momForm: MomFormReducer,
-  signUpForm: SignUpFormReducer
+  moms: MomReducer
 });

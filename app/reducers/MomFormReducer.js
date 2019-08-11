@@ -2,13 +2,13 @@ import {
   MOM_CHANGED,
   SAVING_MOM,
   CREATE_MOM,
-  MOM_SAVED,
+  MOM_SAVED
 } from '../actions/types';
 
 const INITIAL_STATE = {
   name: '',
   phoneNumber: '',
-  zipcode: '',
+  zipcode: ''
 };
 
 export default (state = INITIAL_STATE, action) => {

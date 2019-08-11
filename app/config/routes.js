@@ -4,6 +4,7 @@ import { fromRight } from 'react-navigation-transitions';
 import LoginForm from '../screens/LoginForm';
 import SignUpForm from '../screens/SignUpForm';
 import MomCreate from '../screens/MomCreate';
+import MomList from '../screens/MomList';
 
 const RootStack = createStackNavigator(
   {
@@ -11,7 +12,8 @@ const RootStack = createStackNavigator(
       screen: LoginForm
     },
     SignUpForm: { screen: SignUpForm },
-    MomCreate: { screen: MomCreate }
+    MomCreate: { screen: MomCreate },
+    MomList: { screen: MomList }
   },
   {
     initialRouteName: 'LoginForm',

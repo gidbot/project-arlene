@@ -1,7 +1,13 @@
 import EStyleSheet from 'react-native-extended-stylesheet';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { StatusBar, KeyboardAvoidingView, Alert } from 'react-native';
+import {
+  StatusBar,
+  KeyboardAvoidingView,
+  Alert,
+  Text,
+  View
+} from 'react-native';
 import { connect } from 'react-redux';
 
 import { loginUserChanged, loginUser, logoutUser } from '../actions/login';
@@ -62,13 +68,26 @@ class LoginForm extends Component {
             secureTextEntry
           />
           <SmallContainer>{this.renderButton()}</SmallContainer>
-          <SmallContainer>
-            <Button
-              onPress={() => this.props.navigation.navigate('SignUpForm')}
-            >
-              Sign Up
-            </Button>
-          </SmallContainer>
+
+          <View
+            style={{
+              alignItems: 'center'
+            }}
+          >
+            <Text style={{ color: '#fff' }}>
+              Don't have an account? &nbsp;
+              <Text
+                onPress={() => this.props.navigation.navigate('SignUpForm')}
+                style={{
+                  fontSize: 15,
+                  fontWeight: '900',
+                  color: EStyleSheet.value('$primaryPurple')
+                }}
+              >
+                Sign Up
+              </Text>
+            </Text>
+          </View>
         </KeyboardAvoidingView>
       </LargeContainer>
     );
