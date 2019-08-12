@@ -1,27 +1,23 @@
 import PropTypes from 'prop-types';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import NavigationService from '../config/NavigationService';
 import { Header, ListItem } from 'react-native-elements';
 import React, { Component } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Text } from 'react-native';
 import { connect } from 'react-redux';
+
+import NavigationService from '../config/NavigationService';
 import GLOBALS from '../config/globals';
 import { fetchMoms } from '../actions/momActions';
-
-const list = [
-  {
-    name: 'Amy Farha',
-    subtitle: 'Vice President'
-  },
-  {
-    name: 'Chris Jackson',
-    subtitle: 'Vice Chairman'
-  }
-];
+import { Spinner } from '../components/Spinner';
 
 class MomList extends Component {
-  componentDidMount() {
-    this.props.fetchMoms({ userUid: this.props.user.uid });
+  componentWillMount() {
+    if (!this.props.momsListInitialized) {
+      this.props.fetchMoms({
+        userUid: this.props.userUid,
+        setInitialized: true
+      });
+    }
   }
 
   keyExtractor = (item, index) => index.toString();
@@ -36,9 +32,57 @@ class MomList extends Component {
     />
   );
 
+  _listEmptyComponent = () => {
+    const middleComponent = this.props.momsListLoading
+      ? this.renderSpinner()
+      : this.renderNoMoms();
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: 200
+        }}
+      >
+        {middleComponent}
+      </View>
+    );
+  };
+
+  renderSpinner = () => {
+    return <Spinner size="large" color={EStyleSheet.value('$primaryPurple')} />;
+  };
+
+  renderNoMoms = () => {
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: 200
+        }}
+      >
+        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>No Moms</Text>
+        <Text
+          onPress={() => NavigationService.navigate('MomCreate')}
+          style={{
+            paddingTop: 20,
+            fontSize: 15,
+            fontWeight: '900',
+            color: EStyleSheet.value('$primaryPurple')
+          }}
+        >
+          Add One
+        </Text>
+      </View>
+    );
+  };
+
   render() {
     return (
-      <View>
+      <View style={{ flex: 1 }}>
         <Header
           backgroundColor={EStyleSheet.value('$primaryPurple')}
           centerComponent={{
@@ -53,6 +97,8 @@ class MomList extends Component {
           }}
         />
         <FlatList
+          style={{ flex: 1 }}
+          ListEmptyComponent={this._listEmptyComponent}
           keyExtractor={this.keyExtractor}
           data={this.props.momsList}
           renderItem={this.renderItem}
@@ -63,6 +109,8 @@ class MomList extends Component {
 }
 
 MomList.propTypes = {
+  momsListInitialized: PropTypes.bool,
+  momsListLoading: PropTypes.bool,
   fetchMoms: PropTypes.func,
   momsList: PropTypes.array,
   user: PropTypes.object
@@ -70,8 +118,10 @@ MomList.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    user: state.auth.user,
-    momsList: state.moms.list
+    userUid: state.auth.user.uid,
+    momsList: state.moms.list,
+    momsListInitialized: state.moms.listInitialized,
+    momsListLoading: state.moms.listLoading
   };
 };
 

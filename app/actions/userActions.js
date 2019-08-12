@@ -18,7 +18,7 @@ const signUpUserSuccess = (dispatch, user) => {
     type: SIGN_UP_USER_SUCCESS,
     payload: user
   });
-  dispatch(NavigationActions.navigate('MomCreate'));
+  dispatch(NavigationService.navigate('MomCreate'));
 };
 
 const signUpUserFail = (dispatch, error) => {
@@ -63,15 +63,11 @@ const sendToFirebase = (dispatch, { email, password, zipcode }) => {
     });
 };
 
-// export const signUpUser = fields => dispatch => {
-//   const errors = validateFields(fields);
-//   if (errors.length == 0) {
-//     sendToFirebase(dispatch, fields);
-//   } else {
-//     signUpUserFail(dispatch, errors.join('\n'));
-//   }
-// };
-
 export const signUpUser = fields => dispatch => {
-  NavigationService.navigate('MomCreate');
+  const errors = validateFields(fields);
+  if (errors.length == 0) {
+    sendToFirebase(dispatch, fields);
+  } else {
+    signUpUserFail(dispatch, errors.join('\n'));
+  }
 };

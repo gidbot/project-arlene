@@ -6,6 +6,7 @@ import { View, Alert } from 'react-native';
 import { Header } from 'react-native-elements';
 import { connect } from 'react-redux';
 
+import NavigationService from '../config/NavigationService';
 import { Card, CardSection } from '../components/Cards';
 import { Input } from '../components/TextInput';
 import { Button } from '../components/Buttons';
@@ -51,7 +52,7 @@ class SignUpForm extends Component {
             icon: 'left',
             type: 'antdesign',
             color: 'white',
-            onPress: () => this.props.navigation.goBack()
+            onPress: () => NavigationService.goBack()
           }}
         />
 

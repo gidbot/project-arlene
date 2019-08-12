@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Header } from 'react-native-elements';
 import { View } from 'react-native';
 
+import NavigationService from '../config/NavigationService';
 import { Card, CardSection } from '../components/Cards';
 import { Button } from '../components/Buttons';
 import MomForm from './MomForm';
@@ -13,7 +14,23 @@ import { createMom } from '../actions/momActions';
 class MomCreate extends Component {
   onButtonPress = () => {
     const { name, phoneNumber, zipcode } = this.props;
-    this.props.createMom({ name, phoneNumber, zipcode });
+    const userUid = this.props.userUid;
+    this.props.createMom({ userUid, name, phoneNumber, zipcode });
+  };
+
+  renderError = () => {
+    if (this.props.error) {
+      Alert.alert(
+        'Saving Mom Failed',
+        this.props.error,
+        [
+          {
+            text: 'Try Again'
+          }
+        ],
+        { cancelable: false }
+      );
+    }
   };
 
   render() {
@@ -25,7 +42,7 @@ class MomCreate extends Component {
             icon: 'left',
             type: 'antdesign',
             color: 'white',
-            onPress: () => this.props.navigation.goBack()
+            onPress: () => NavigationService.goBack()
           }}
           centerComponent={{
             text: 'Add Mom',
@@ -33,6 +50,7 @@ class MomCreate extends Component {
           }}
         />
         <Card>
+          {this.renderError()}
           <MomForm {...this.props} />
           <CardSection>
             <Button onPress={this.onButtonPress}>Save</Button>
@@ -52,7 +70,8 @@ MomCreate.propTypes = {
 
 const mapStateToProps = state => {
   const { name, phoneNumber, zipcode } = state.momForm;
-  return { name, phoneNumber, zipcode };
+  const userUid = state.auth.user.uid;
+  return { userUid, name, phoneNumber, zipcode };
 };
 
 export default connect(

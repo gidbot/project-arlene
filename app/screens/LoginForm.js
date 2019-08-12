@@ -77,7 +77,7 @@ class LoginForm extends Component {
             <Text style={{ color: '#fff' }}>
               Don't have an account? &nbsp;
               <Text
-                onPress={() => this.props.navigation.navigate('SignUpForm')}
+                onPress={() => NavigationService.navigate('SignUpForm')}
                 style={{
                   fontSize: 15,
                   fontWeight: '900',
@@ -100,10 +100,7 @@ LoginForm.propTypes = {
   email: PropTypes.string,
   password: PropTypes.string,
   loading: PropTypes.bool,
-  error: PropTypes.string,
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired
-  }).isRequired
+  error: PropTypes.string
 };
 
 const mapStateToProps = ({ auth }) => {
