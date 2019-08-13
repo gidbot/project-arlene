@@ -3,10 +3,12 @@ import AuthReducer from './AuthReducer';
 import SignUpFormReducer from './SignUpFormReducer';
 import MomFormReducer from './MomFormReducer';
 import MomReducer from './MomReducer';
+import ForgotPasswordFormReducer from './ForgotPasswordFormReducer';
 
 export default combineReducers({
   auth: AuthReducer,
   signUpForm: SignUpFormReducer,
   momForm: MomFormReducer,
-  moms: MomReducer
+  moms: MomReducer,
+  forgotPasswordForm: ForgotPasswordFormReducer
 });

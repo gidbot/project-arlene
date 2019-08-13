@@ -15,3 +15,7 @@ export const USER_CHANGED = 'user_changed';
 export const SIGN_UP_USER_SUCCESS = 'sign_up_user_success';
 export const SIGN_UP_USER_FAIL = 'sign_up_user_fail';
 export const SIGNING_UP_USER = 'sign_up_user';
+export const SENDING_PASSWORD_RESET = 'sending_password_reset';
+export const PASSWORD_RESET_SUCCESS = 'password_reset_success';
+export const PASSWORD_RESET_FAIL = 'password_reset_fail';
+export const PASSWORD_EMAIL_CHANGED = 'password_email_changed';

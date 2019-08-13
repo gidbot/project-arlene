@@ -5,6 +5,8 @@ import LoginForm from '../screens/LoginForm';
 import SignUpForm from '../screens/SignUpForm';
 import MomCreate from '../screens/MomCreate';
 import MomList from '../screens/MomList';
+import MomView from '../screens/MomView';
+import ForgotPasswordForm from '../screens/ForgotPasswordForm';
 
 const RootStack = createStackNavigator(
   {
@@ -12,7 +14,9 @@ const RootStack = createStackNavigator(
       screen: LoginForm
     },
     SignUpForm: { screen: SignUpForm },
+    ForgotPasswordForm: { screen: ForgotPasswordForm },
     MomCreate: { screen: MomCreate },
+    MomView: { screen: MomView },
     MomList: { screen: MomList }
   },
   {

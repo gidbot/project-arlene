@@ -27,7 +27,7 @@ class MomList extends Component {
       title={GLOBALS.capitalize(item.name)}
       subtitle={item.phoneNumber}
       leftAvatar={{ icon: { name: 'user', type: 'antdesign' } }}
-      onPress={() => NavigationService.navigate('MomForm')}
+      onPress={() => NavigationService.navigate('MomView')}
       chevron
     />
   );
@@ -86,7 +86,7 @@ class MomList extends Component {
         <Header
           backgroundColor={EStyleSheet.value('$primaryPurple')}
           centerComponent={{
-            text: 'Moms',
+            text: 'My Moms',
             style: { color: '#fff', fontWeight: '900', fontSize: 30 }
           }}
           rightComponent={{

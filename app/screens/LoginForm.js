@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 
+import NavigationService from '../config/NavigationService';
 import { loginUserChanged, loginUser, logoutUser } from '../actions/login';
 import { LargeContainer, SmallContainer } from '../components/Containers';
 import { Logo } from '../components/Logo';
@@ -86,6 +87,18 @@ class LoginForm extends Component {
               >
                 Sign Up
               </Text>
+            </Text>
+
+            <Text
+              onPress={() => NavigationService.navigate('ForgotPasswordForm')}
+              style={{
+                marginTop: 10,
+                fontSize: 15,
+                fontWeight: '900',
+                color: EStyleSheet.value('$primaryPurple')
+              }}
+            >
+              Forgot Password?
             </Text>
           </View>
         </KeyboardAvoidingView>

@@ -1,4 +1,3 @@
-import GLOBALS from '../config/globals';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -10,13 +9,17 @@ import NavigationService from '../config/NavigationService';
 import { Card, CardSection } from '../components/Cards';
 import { Input } from '../components/TextInput';
 import { Button } from '../components/Buttons';
-import { userChanged, signUpUser } from '../actions/userActions';
 import { Spinner } from '../components/Spinner';
+import {
+  emailChanged,
+  sendPasswordReset,
+  passwordResetCompleted
+} from '../actions/passwordActions';
 
-class SignUpForm extends Component {
-  onSignUpPress = () => {
-    const { email, password, zipcode } = this.props;
-    this.props.signUpUser({ email, password, zipcode });
+class ForgotPasswordForm extends Component {
+  onPress = () => {
+    const { email } = this.props;
+    this.props.sendPasswordReset({ email });
   };
 
   renderButton = () => {
@@ -25,17 +28,33 @@ class SignUpForm extends Component {
         <Spinner size="large" color={EStyleSheet.value('$primaryPurple')} />
       );
     }
-    return <Button onPress={this.onSignUpPress}>Sign Up</Button>;
+    return <Button onPress={this.onPress}>Send Password Reset</Button>;
   };
 
   renderError = () => {
     if (this.props.error) {
       Alert.alert(
-        'Sign Up Failed',
+        'Password Reset Failed',
         this.props.error,
         [
           {
             text: 'Try Again'
+          }
+        ],
+        { cancelable: false }
+      );
+    }
+  };
+
+  renderEmailSent = () => {
+    if (this.props.emailSent) {
+      Alert.alert(
+        'Password Has Been Reset',
+        'Please Check Your Email',
+        [
+          {
+            text: 'Ok',
+            onPress: () => this.props.passwordResetCompleted()
           }
         ],
         { cancelable: false }
@@ -49,7 +68,7 @@ class SignUpForm extends Component {
         <Header
           backgroundColor={EStyleSheet.value('$primaryPurple')}
           centerComponent={{
-            text: 'Create Account',
+            text: 'Forgot Password',
             style: { color: '#fff', fontWeight: '900', fontSize: 30 }
           }}
           leftComponent={{
@@ -62,34 +81,12 @@ class SignUpForm extends Component {
 
         <Card>
           {this.renderError()}
+          {this.renderEmailSent()}
           <CardSection>
             <Input
-              placeholder="Email"
+              placeholder="Enter Email"
               value={this.props.email}
-              onChangeText={value =>
-                this.props.userChanged({ prop: 'email', value })
-              }
-            />
-          </CardSection>
-          <CardSection>
-            <Input
-              placeholder="Password"
-              value={this.props.password}
-              onChangeText={value =>
-                this.props.userChanged({ prop: 'password', value })
-              }
-              secureTextEntry
-            />
-          </CardSection>
-          <CardSection>
-            <Input
-              placeholder="Zip Code"
-              value={this.props.zipcode}
-              onChangeText={value =>
-                this.props.userChanged({ prop: 'zipcode', value })
-              }
-              keyboardType="numeric"
-              maxLength={GLOBALS.ZIPCODE_LENGTH}
+              onChangeText={value => this.props.emailChanged({ value })}
             />
           </CardSection>
           <CardSection>{this.renderButton()}</CardSection>
@@ -99,28 +96,27 @@ class SignUpForm extends Component {
   }
 }
 
-SignUpForm.propTypes = {
-  userChanged: PropTypes.func,
-  signUpUser: PropTypes.func,
+ForgotPasswordForm.propTypes = {
+  emailChanged: PropTypes.func,
+  sendPasswordReset: PropTypes.func,
+  passwordResetCompleted: PropTypes.func,
   email: PropTypes.string,
-  password: PropTypes.string,
-  zipcode: PropTypes.string,
   error: PropTypes.string,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  emailSent: PropTypes.bool
 };
 
-const mapStateToProps = ({ signUpForm }) => {
-  const { email, password, zipcode, error, loading } = signUpForm;
+const mapStateToProps = ({ forgotPasswordForm }) => {
+  const { email, error, loading, emailSent } = forgotPasswordForm;
   return {
     email,
-    password,
-    zipcode,
     error,
-    loading
+    loading,
+    emailSent
   };
 };
 
 export default connect(
   mapStateToProps,
-  { userChanged, signUpUser }
-)(SignUpForm);
+  { emailChanged, sendPasswordReset, passwordResetCompleted }
+)(ForgotPasswordForm);
