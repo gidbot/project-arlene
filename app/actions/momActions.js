@@ -5,9 +5,9 @@ import {
   MOM_CHANGED,
   MOMS_FETCH_SUCCESS,
   SAVING_MOM,
-  SAVE_MOM_SUCCESS,
   SAVE_MOM_FAIL,
-  ADD_MOM_TO_LIST
+  ADD_MOM_TO_LIST,
+  MOM_LIST_REFRESHING
 } from './types';
 
 export const momChanged = ({ prop, value }) => ({
@@ -15,26 +15,31 @@ export const momChanged = ({ prop, value }) => ({
   payload: { prop, value }
 });
 
-export const fetchMoms = ({ userUid }) => {
-  return dispatch => {
-    const firestore = firebase.firestore();
-    firestore
-      .collection('moms')
-      .where('userUid', '==', userUid)
-      .get()
-      .then(snapshot => {
-        const momsList = snapshot.docs.map(doc => {
-          return { id: doc.id, ...doc.data() };
-        });
-        dispatch({ type: MOMS_FETCH_SUCCESS, payload: momsList });
+const getMomsFromFirebase = (dispatch, { userUid }) => {
+  const firestore = firebase.firestore();
+  firestore
+    .collection('moms')
+    .where('userUid', '==', userUid)
+    .get()
+    .then(snapshot => {
+      const momsList = snapshot.docs.map(doc => {
+        return { id: doc.id, ...doc.data() };
       });
-  };
+      dispatch({ type: MOMS_FETCH_SUCCESS, payload: momsList });
+    });
+};
+
+export const fetchMoms = ({ userUid }) => dispatch => {
+  getMomsFromFirebase(dispatch, { userUid });
+};
+
+export const refreshMoms = ({ userUid }) => dispatch => {
+  dispatch({ type: MOM_LIST_REFRESHING });
+  getMomsFromFirebase(dispatch, { userUid });
 };
 
 const saveMomSuccess = (dispatch, mom) => {
-  dispatch({
-    type: SAVE_MOM_SUCCESS
-  });
+  console.log('momLog', mom);
   dispatch({
     type: ADD_MOM_TO_LIST,
     payload: mom
@@ -71,6 +76,7 @@ const sendNewMom = (dispatch, { userUid, name, phoneNumber, zipcode }) => {
     .collection('moms')
     .add(momData)
     .then(mom => {
+      momData['id'] = mom.id;
       saveMomSuccess(dispatch, momData);
     })
     .catch(error => {

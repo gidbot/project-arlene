@@ -9,6 +9,7 @@ export const MOM_SAVED = 'mom_saved';
 export const SAVE_MOM_SUCCESS = 'save_mom_success';
 export const SAVE_MOM_FAIL = 'save_mom_fail';
 export const FETCHING_MOM_LIST = 'fetching_mom_list';
+export const MOM_LIST_REFRESHING = 'mom_list_refreshing';
 export const MOMS_FETCH_SUCCESS = 'moms_fetch_success';
 export const ADD_MOM_TO_LIST = 'add_mom_to_list';
 export const USER_CHANGED = 'user_changed';

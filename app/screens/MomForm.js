@@ -51,7 +51,7 @@ MomForm.propTypes = {
   name: PropTypes.string,
   phoneNumber: PropTypes.string,
   zipcode: PropTypes.string,
-  error: PropTypes.stringw
+  error: PropTypes.string
 };
 
 const mapStateToProps = ({ momForm }) => {

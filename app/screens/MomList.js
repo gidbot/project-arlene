@@ -7,20 +7,17 @@ import { connect } from 'react-redux';
 
 import NavigationService from '../config/NavigationService';
 import GLOBALS from '../config/globals';
-import { fetchMoms } from '../actions/momActions';
+import { fetchMoms, refreshMoms } from '../actions/momActions';
 import { Spinner } from '../components/Spinner';
 
 class MomList extends Component {
   componentWillMount() {
     if (!this.props.momsListInitialized) {
       this.props.fetchMoms({
-        userUid: this.props.userUid,
-        setInitialized: true
+        userUid: this.props.userUid
       });
     }
   }
-
-  keyExtractor = (item, index) => index.toString();
 
   renderItem = ({ item }) => (
     <ListItem
@@ -99,9 +96,15 @@ class MomList extends Component {
         <FlatList
           style={{ flex: 1 }}
           ListEmptyComponent={this._listEmptyComponent}
-          keyExtractor={this.keyExtractor}
+          keyExtractor={(item, index) => index.toString()}
           data={this.props.momsList}
           renderItem={this.renderItem}
+          onRefresh={() =>
+            this.props.refreshMoms({
+              userUid: this.props.userUid
+            })
+          }
+          refreshing={this.props.momListRefreshing}
         />
       </View>
     );
@@ -111,7 +114,9 @@ class MomList extends Component {
 MomList.propTypes = {
   momsListInitialized: PropTypes.bool,
   momsListLoading: PropTypes.bool,
+  momListRefreshing: PropTypes.bool,
   fetchMoms: PropTypes.func,
+  refreshMoms: PropTypes.func,
   momsList: PropTypes.array,
   user: PropTypes.object
 };
@@ -121,11 +126,12 @@ const mapStateToProps = state => {
     userUid: state.auth.user.uid,
     momsList: state.moms.list,
     momsListInitialized: state.moms.listInitialized,
-    momsListLoading: state.moms.listLoading
+    momsListLoading: state.moms.listLoading,
+    momListRefreshing: state.moms.listRefreshing
   };
 };
 
 export default connect(
   mapStateToProps,
-  { fetchMoms }
+  { fetchMoms, refreshMoms }
 )(MomList);
